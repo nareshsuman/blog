@@ -1,18 +1,28 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Context } from '../context/BlogContext'
+import { Entypo } from '@expo/vector-icons'
 const Bloglist = ({ navigation }) => {
     const id = navigation.getParam('id')
     const { state } = useContext(Context)
     const blogPost = state.find((post) => post.id === id)
     return (
         <View>
-            <Text>{blogPost.title}</Text>
+            <Text>Title-{blogPost.title}</Text>
+            <Text>Content-{blogPost.content}</Text>
         </View>
     )
 
 }
-
+Bloglist.navigationOptions = ({navigation}) => {
+    return {
+        headerRight: () => {
+            return <TouchableOpacity onPress={()=>{navigation.navigate('Edit',{id:navigation.getParam('id')})}}>
+                <Entypo name="edit" size={35} />
+            </TouchableOpacity>
+        }
+    }
+}
 const styles = StyleSheet.create({
     text: {
         fontSize: 20

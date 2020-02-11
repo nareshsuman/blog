@@ -4,19 +4,14 @@ import { Context } from '../context/BlogContext'
 import { Entypo } from '@expo/vector-icons'
 const HomeScreen = ({ navigation }) => {
 
-    const { state, addPosts, deletePost } = useContext(Context)
+    const { state, deletePost } = useContext(Context)
     return (
         <>
-            <Text style={styles.text}> HomeScreen - {state.length}</Text>
-            <TouchableOpacity style={styles.button} onPress={addPosts} >
-                <Text> Add posts</Text>
-            </TouchableOpacity>
-
             <FlatList
                 data={state}
                 keyExtractor={(item) => (item.title + item.id)}
                 renderItem={({ item }) => {
-                    return <TouchableOpacity onPress={() => navigation.navigate('Show',{id:item.id})}>
+                    return <TouchableOpacity onPress={() => navigation.navigate('Show', { id: item.id })}>
                         <View style={styles.row}>
                             <Text>{item.title}-{item.id}</Text>
                             <TouchableOpacity onPress={() => deletePost(item.id)}>
@@ -30,7 +25,21 @@ const HomeScreen = ({ navigation }) => {
     )
 }
 
+HomeScreen.navigationOptions = ({ navigation }) => {
+    return {
+        headerRight: () => {
+            return <TouchableOpacity onPress={() => navigation.navigate('Create')}>
+                <Entypo style={styles.addIcon}  name='plus'  />
+            </TouchableOpacity>
+        }
+    }
+
+}
 const styles = StyleSheet.create({
+    addIcon: {
+        fontSize: 30,
+        margin:10
+    },
     icon: {
         fontSize: 35
     },
